@@ -3,7 +3,8 @@
 	"name":"#Remembering",
 	"version": "1.0.0",
 	"description": "북마크 앱임",
-	"browser_action": {
+	"sidebar_action": {
+		"default_page" : "sidebar.html",
 		"default_icon" : { 
 			"16" : "icon_active16.png",
 			"32" : "icon_active32.png" 

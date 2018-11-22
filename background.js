@@ -1,19 +1,15 @@
 var url;
 
-chrome.browserAction.onClicked.addListener( () => {
-	console.log("왜 안대냐고");
-	chrome.tabs.create( {
-		url : "http://news.naver.com/"
-		
-	} );
+whale.sidebarAction.onClicked.addListener( () => {
+	console.log("side bar clicked");
 	addURLToStorage(url);
 	showStorageData('url');
-})
+	} );
 
 whale.tabs.onCreated.addListener( function(tab) {
 		url = tab.url;
-		
 });
+
 whale.tabs.onUpdated.addListener( function(tabId, changeInfo, tab) {
 		if(url === "") {
 			url = tab.url;
