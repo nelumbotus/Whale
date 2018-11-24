@@ -2,23 +2,13 @@ var url;
 
 whale.sidebarAction.onClicked.addListener( () => {
 	console.log("side bar clicked");
-	addURLToStorage(url);
-	showStorageData('url');
+	//addURLToStorage(url);
+	//showStorageData('url');
 	} );
 
-whale.tabs.onCreated.addListener( function(tab) {
-		url = tab.url;
-});
-
-whale.tabs.onUpdated.addListener( function(tabId, changeInfo, tab) {
-		if(url === "") {
-			url = tab.url;
-			console.log(url);
-		}
-});
 
 whale.tabs.onRemoved.addListener( ()=> {
-	removeStorageData('url');
+	//removeStorageData('url');
 });
 
 function addURLToStorage(URLvalue) {
