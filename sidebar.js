@@ -20,17 +20,18 @@ function showDebugText(text) {
 }
 
 function getKeywordFromURL(URL) {
-	var params; // 파라미터가 담길 배열
 	var param; // 리턴할 파라미터
 	URL = decodeURIComponent(URL); // url 디코드 -> 한글 검색어 얻기 위해
 
 	if (URL.match("/search.naver?")) { //검색 창이 네이버일 때
-
+	  	var tempString = URL.substring(URL.indexOf('query=') + 6); // 검색어 앞부분 자르기
+		var params = tempString.split('&'); // &으로 뒷부분 split
+		param = params[0]; // 잘린 params 중 처음 요소 얻기
 	}
-	if (URL.match("/search?")) { // 검색 창이 구글일 때
+	else if (URL.match("/search?")) { // 검색 창이 구글, 다음
 		// 구글 검색창 : https://www.google.co.kr/search?q=검색어&oq=검색어&aqs=chrome..69i57j0l5&sourceid=chrome&ie=UTF-8
 		var tempString = URL.substring(URL.indexOf('q=') + 2); // 검색어 앞부분 자르기
-		params = tempString.split('&'); // &으로 뒷부분 split
+		var params = tempString.split('&'); // &으로 뒷부분 split
 		param = params[0]; // 잘린 params 중 처음 요소 얻기
 	}
 
