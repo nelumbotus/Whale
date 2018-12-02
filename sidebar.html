@@ -2,20 +2,69 @@
 
 <head>
 	<meta charset="utf-8">
-	<style>
-		div {
-			cursor: pointer;
-		}
-		
-		#forDebug {
-			border: 2px solid red;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
+	<link rel="stylesheet" href="sidebar.css">
 </head>
 
 <body>
-	<div id="addBtn"> 추가하기? </div>
-	<div id="forDebug"> 디버그를 위한 div .. console열기 귀찮아서 만들었습니다</div>
+	<div id="title-wrap">
+		<span id="title"># Remembering</span>
+		<!--검색 아이콘 svg-->
+		<div id="searchBtn">
+				<svg class="imageBtn svg" width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+					<!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+					<desc>Created with Sketch.</desc>
+					<defs></defs>
+					<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+						<g id="search_white" transform="translate(-2.000000, -2.000000)" fill="#FFFFFF" fill-rule="nonzero">
+							<g id="search-outline" transform="translate(-1.000000, -1.000000)">
+								<path d="M22.671441,21.0941713 L18.8948798,17.3287176 C20.1133591,15.7763896 20.774507,13.8594519 20.7720529,11.8860264 C20.7720529,6.97840955 16.7936433,3 11.8860264,3 C6.97840955,3 3,6.97840955 3,11.8860264 C3,16.7936433 6.97840955,20.7720529 11.8860264,20.7720529 C13.8594519,20.774507 15.7763896,20.1133591 17.3287176,18.8948798 L21.0941713,22.671441 C21.3027337,22.8817207 21.5866377,23 21.8828062,23 C22.1789747,23 22.4628787,22.8817207 22.671441,22.671441 C22.8817207,22.4628787 23,22.1789747 23,21.8828062 C23,21.5866377 22.8817207,21.3027337 22.671441,21.0941713 Z M5.22150661,11.8860264 C5.22150661,8.20531377 8.20531377,5.22150661 11.8860264,5.22150661 C15.5667391,5.22150661 18.5505463,8.20531377 18.5505463,11.8860264 C18.5505463,15.5667391 15.5667391,18.5505463 11.8860264,18.5505463 C8.20531377,18.5505463 5.22150661,15.5667391 5.22150661,11.8860264 Z"
+								 id="Shape"></path>
+							</g>
+						</g>
+					</g>
+				</svg>
+		</div>
+		
+	</div>
+
+	<div id="content-wrap">
+		<!--추가하기 아이콘 svg-->
+		<div id="addBtn-wrap">
+				<svg class="imageBtn inline-block" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink">
+				   <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+				   <desc>Created with Sketch.</desc>
+				   <defs></defs>
+				   <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					   <g id="icon_deactive" fill="#878481">
+						   <path d="M4,0 L20,0 C22.209139,-4.05812251e-16 24,1.790861 24,4 L24,20 C24,22.209139 22.209139,24 20,24 L4,24 C1.790861,24 2.705415e-16,22.209139 0,20 L0,4 C-2.705415e-16,1.790861 1.790861,4.05812251e-16 4,0 Z M16.174585,9 L17.2475783,9 L14.889164,12.991282 C14.7037416,13.3050831 14.7037416,13.6949169 14.889164,14.008718 L17.2475783,18 L7,18 L7,14.5 C7,13.9477153 6.55228475,13.5 6,13.5 C5.44771525,13.5 5,13.9477153 5,14.5 L5,19 C5,19.5522847 5.44771525,20 6,20 L19,20 C19.7742942,20 20.2548306,19.1578975 19.8609332,18.491282 L16.9116275,13.5 L19.8609332,8.50871803 C20.2548306,7.84210248 19.7742942,7 19,7 L16.174585,7 C15.6223002,7 15.174585,7.44771525 15.174585,8 C15.174585,8.55228475 15.6223002,9 16.174585,9 Z M8.83865385,10.6218422 L5.6787025,7.70159704 C5.27309723,7.32676 4.64042373,7.35170257 4.26558669,7.75730784 C3.89074965,8.16291312 3.91569222,8.79558662 4.3212975,9.17042366 L8.34233543,12.8864354 C8.79416956,13.3039945 9.51231405,13.218398 9.8533455,12.7063362 L14.6165688,5.55431411 C14.922708,5.09464333 14.7982461,4.47383167 14.3385753,4.16769244 C13.8789046,3.86155321 13.2580929,3.98601512 12.9519537,4.44568589 L8.83865385,10.6218422 Z"
+							id="Combined-Shape"></path>
+					   </g>
+				   </g>
+			   </svg>
+	   
+			   <div class="inline-block text-align-center" id="addBtn-text">추가하기 </div>
+
+		</div>
+
+		<div id="site-wrap">
+			<div id="site-icon" class="inline-block"></div>
+			<div id="site-title-wrap" class="inline-block">
+					<p id="site-title">사이트 제목</p>
+					<p id="site-url">사이트 주소</p>
+			</div>
+		</div>
+		<div id="tags-wrap">
+			<div id="tags-text" class="inline-block">TAGS</div>
+			<div class="inline-block line" style="width: 70%; margin-left: 8px;"></div>
+
+			<div id="tags-add-wrap">
+				<p id="tag-add-recommand-text">검색어 기반 추천</p>
+			</div>
+		</div>
+		
+	</div>
 
 	<script src="sidebar.js"></script>
 </body>

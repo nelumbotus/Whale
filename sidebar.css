@@ -1,3 +1,119 @@
-div {
+body {
+	background-color: #1A6DE3;
+	font-family: 'NanumSquare';
+	margin: auto 0;
+	overflow: hidden;
+}
+
+#title-wrap {
+	padding: 16px;
+	position: relative;
+}
+
+#forDebug {
+	border: 2px solid red;
+}
+
+#title {
+	font-size: 16pt;
+	color : white;
+	font-weight: bolder;
+	vertical-align: top;
+}
+
+#content-wrap {
+	background-color: white;
+	width: 100%;
+	height : 100%;
+	padding: 24px;
+	padding-top: 36px;
+	box-shadow: 0 0 4px 0 #ADB5BD;
+	border-radius: 8px;
+}
+
+#addBtn-text {
+	font-weight: normal;
+	color : #878481;
+	font-size: 12pt;
+	vertical-align: top;
+	margin-top: 2px;
+}
+
+.imageBtn {
+	width: 20px;
 	cursor: pointer;
+	margin-right: 12px;
+	width: fit-content;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+.text-align-center {
+	text-align: center;
+}
+
+#addBtn-wrap {
+	cursor: pointer;
+	width: fit-content;
+}
+
+#searchBtn {
+	position: absolute;
+	right: 0;
+	top: 16px;
+}
+
+#site-icon {
+	width: 40px;
+	height: 40px;
+	background-color: #1A6DE3;
+	vertical-align: middle;
+}
+
+#site-wrap {
+	margin-top: 32px;
+	padding-top: 8px;
+	padding-bottom: 16px;
+}
+#site-title-wrap {
+	margin-left: 16px;
+	vertical-align: middle;
+}
+
+#site-title {
+	margin: 0;
+	font-size: 16px;
+	color : #262626;
+}
+#site-url {
+	margin: 0;
+	margin-top : 4px;
+	font-size: 14px;
+	color : #ADB5BD;
+}
+
+#tags-wrap {
+	margin-top: 24px;
+}
+#tags-text {
+	background-image: linear-gradient(-200deg, #1A6DE3 0%, #3391D9 100%);
+	color : white;
+	padding: 4px 16px 4px 16px;
+	width: fit-content;
+	border-radius: 100px;
+	font-weight: bold;
+}
+.line {
+	background-color: #E8ECF0;
+	height: 2px;
+	align-self: center;
+}
+#tags-add-wrap {
+	padding-left : 8px;
+}
+#tag-add-recommand-text {
+	font-size: 10px;
+	color: #878481;
 }

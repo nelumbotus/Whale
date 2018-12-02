@@ -1,7 +1,7 @@
 // 윈도우가 로드된 후에
 window.onload = function () {
 	//추가하기 버튼
-	document.getElementById("addBtn").onclick = function () {
+	document.getElementById("addBtn-wrap").onclick = function () {
 	  	// 추가하기를 누르면 현재 탭들 쿼리에서 0번째를 가져온다
 		whale.tabs.query({
 				"active": true,
@@ -13,6 +13,12 @@ window.onload = function () {
 
 			});
 	}
+
+	// UI제어
+	document.getElementById("addBtn-wrap").addEventListener("click", () => {
+		document.getElementById("addBtn-text").innerHTML = "추가되었습니다!";
+	});
+	
 
 }
 
