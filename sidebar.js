@@ -16,9 +16,19 @@ window.onload = function () {
 
 	// UI제어
 	document.getElementById("addBtn-wrap").addEventListener("click", () => {
+		// 추가하기-추가되었습니다 영역
 		document.getElementById("addBtn-text").innerHTML = "추가되었습니다!";
+		document.getElementById("addBtn-text").style.color = "#1A6DE3";
+		document.getElementById("addBtn-text").style.fontWeight = "bold";
+		document.getElementById("icon_deactive").style.fill = "#1A6DE3";
+
+		// 추가 영역 나타나기
+		document.getElementById("site-wrap").style.visibility = "visible";
+		document.getElementById("site-wrap").classList.add("bounceInUp");
+		document.getElementById("tags-wrap").style.visibility = "visible";
+		document.getElementById("tags-wrap").classList.add("bounceInUp");
 	});
-	
+
 
 }
 
