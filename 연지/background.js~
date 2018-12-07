@@ -11,7 +11,7 @@ function UrlSearchKeyPair(url, searchKey){
 whale.sidebarAction.onClicked.addListener ( () => {
 	//alert("사이드바 클릭");  
 	//urlSearchKeyPairs 에서, 현재 url을 url값으로 가지는 객체를 찾아서 걔의 search키 얻자..
-	document.getElementById("TagRecommend").innerHTML = "<b>url</b> = " + newUnit.url 
+	document.getElementById("forDebug").innerHTML = "<b>url</b> = " + newUnit.url 
 		+"<br> <b>tagName</b> = " + newUnit.tags[0]
 		+"<br> <b>tagTitle</b> = " + newUnit.title;
 } );

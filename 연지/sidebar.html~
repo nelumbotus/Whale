@@ -10,7 +10,7 @@
 		#forDebug {
 			border: 2px solid red;
 		}
-		#stored, #tagRecommend {
+		#stored #tagRecommend {
 			border: 2px solid blue;		
 		}
 	</style>
