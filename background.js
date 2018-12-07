@@ -40,25 +40,31 @@ whale.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	searchURL = message;
 	var searchKeyword = getKeywordFromURL(searchURL);
 	whale.sidebarAction.show();
+	var isCreated = true; // url을 한번만 받아오기 위한 플래그
 	// 메세지를 받았으면 열려 있는 페이지의 url과 title을 가져옴 
-	whale.tabs.onUpdated.addListener(() => {
-		whale.tabs.query({
-			"active": true,
-			"lastFocusedWindow": true
-		},
-		function (tabs) {
-			tabURL = tabs[0].url;
-			tabTitle = tabs[0].title;
-			// 이 함수가 호출되는 타이밍이 늦어서 url을 얻어온 뒤에 스토리지 저장
-			var newUrlSearchKeyPair = new UrlSearchKeyPair(tabURL, searchKeyword);
-			UrlSearchKeyPairs.push(newUrlSearchKeyPair);
-			alert(tabURL+ " 검색어 : " + searchKeyword);
-			// whale.storage.local.set({pairArray: UrlSearchKeyPairs}, () => {
-			// 	console.log("pair 저장함");
-			// }); 
-		});
+	whale.tabs.onCreated.addListener(() => {
+		whale.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+			if(isCreated === false) return; 
+			if(changeInfo.status === "complete") 
+			{
+				whale.tabs.query({
+					"active": true,
+				},
+				function (tabs) {
+					tabURL = tabs[0].url;
+					tabTitle = tabs[0].title;
+					// 이 함수가 호출되는 타이밍이 늦어서 url을 얻어온 뒤에 스토리지 저장
+					var newUrlSearchKeyPair = new UrlSearchKeyPair(tabURL, searchKeyword);
+					UrlSearchKeyPairs.push(newUrlSearchKeyPair);
+					alert(tabURL+ " 검색어 : " + searchKeyword);
+					// whale.storage.local.set({pairArray: UrlSearchKeyPairs}, () => {
+					// 	console.log("pair 저장함");
+					// }); 
+				});
+				isCreated = false;
+			}
+		 });
 	});
-	
 });
 
 whale.sidebarAction.onClicked.addListener(() => {
