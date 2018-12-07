@@ -26,9 +26,5 @@
 	"permissions": [
 		"tabs",
 		"storage"
-	],
-
-	"externally_connectable": {
-        "matches": ["https://*.naver.com/*"]
-    }
+	]
 }

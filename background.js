@@ -1,133 +1,48 @@
-// function Tunit (url, tags){
-// 	this.url = url; //스트링 
-// 	this.tags = tags; //어레이
-// 	this.num = "";
-	
-// 	// this.getUrl = function(){
-// 	// 	return url;
-// 	// }
-// 	// this.getTags = function(){
-// 	// 	return tags;	
-// 	// }
-// }
-// // 객체 메소드 정의
-// Tunit.prototype.getUrl = function() {
-// 	return this.url;
-// }
-// Tunit.prototype.getTags = function() {
-// 	return this.tags;
-// }
-// Tunit.prototype.removeTag = function() {
-
-// }
-// Tunit.prototype.addTag = function() {
-
-// }
+function UrlKeyPair(url, searchKey) {
+    this.url = url;
+    this.searchKey = searchKey;
+}
 
 var searchURL;
-var tabURL;
-var tabTitle;
-var UrlSearchKeyPairs = [];
-
-//탭이 열릴때마다 생성 (탭의url, 서치키) 
-function UrlSearchKeyPair(url, searchKey){
-	this.url = url;
-	this.searchKey = searchKey;
-}
-
-//콘텐츠스크립트에서 url 메세지를 받는다 (검색 엔진에서 하이퍼 링크를 클릭했을 때 검색 엔진의 url이 메세지로 옴)
-whale.runtime.onMessage.addListener((message, sender, sendResponse) => {
-	searchURL = message;
-	var searchKeyword = getKeywordFromURL(searchURL);
-	whale.sidebarAction.show();
-	var isCreated = true; // url을 한번만 받아오기 위한 플래그
-	// 메세지를 받았으면 열려 있는 페이지의 url과 title을 가져옴 
-	whale.tabs.onCreated.addListener(() => {
-		whale.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-			if(isCreated === false) return; 
-			if(changeInfo.status === "complete") 
-			{
-				whale.tabs.query({
-					"active": true,
-				},
-				function (tabs) {
-					tabURL = tabs[0].url;
-					tabTitle = tabs[0].title;
-					// 이 함수가 호출되는 타이밍이 늦어서 url을 얻어온 뒤에 스토리지 저장
-					var newUrlSearchKeyPair = new UrlSearchKeyPair(tabURL, searchKeyword);
-					UrlSearchKeyPairs.push(newUrlSearchKeyPair);
-					// alert(tabURL+ " 검색어 : " + searchKeyword);
-					whale.storage.local.set({pairArray: UrlSearchKeyPairs}, () => {
-						console.log("pair 저장함");
-					}); 
-				});
-				isCreated = false;
-			}
-		 });
-	});
+var UrlKeyPairs;
+whale.storage.local.get(["pairArray"], function(result) {
+    if(result.pairArray === null || result.pairArray === undefined) { // storage에 pairArray가 없을 경우
+        UrlKeyPairs = [];
+    }
+    else {
+        UrlKeyPairs = result.pairArray;
+    }
 });
 
-whale.sidebarAction.onClicked.addListener(() => {
-	//addURLToStorage(url);
-	//showStorageData('url');
+// contentsScript.js로부터 메세지를 받을 때
+whale.runtime.onConnect.addListener(port => {
+    if(port.name === 'urlPort') {
+        port.onMessage.addListener(message => {
+            searchURL = message;
+            var keyword = getKeywordFromURL(searchURL);
+            //alert(keyword);
+            var isCreated = true; //url을 한번만 받아오기 위한 플래그
+            whale.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+                if(isCreated === false) return;
+                // alert(changeInfo.url);
+                // 객체 만들기
+                var tabURL = changeInfo.url;
+                var newUrlKeyPair = new UrlKeyPair(tabURL, keyword);
+                UrlKeyPairs.push(newUrlKeyPair);
+                //스토리지에 저장
+                whale.storage.local.set({pairArray : UrlKeyPairs}, () => {
+                    if(!whale.runtime.lastError) {
+                        alert("저장 성공, 길이는 " + UrlKeyPairs.length);
+                    }
+                });
+                if(changeInfo.url !== undefined) isCreated = false;
+            });
+            
+        });
+    }
 });
 
-
-whale.tabs.onRemoved.addListener(() => {
-	console.log("tab removed");
-	//removeStorageData('url');
-});
-
-// document.body.onclick = function (e) {
-// 	// TODO : 현재 페이지가 검색엔진인지 검사하기
-// 	var target = e.target;
-
-// 	var tagName = target.tagName.toLowerCase(); // 클릭한 오브젝트의 태그이름 얻기
-// 	console.log("tag name : " + target.tagName.toLowerCase());
-
-// 	// 스토리지에 저장
-// 	// whale.storage.local.set({
-// 	// 	message : "hi"
-// 	// });
-
-// 	// 태그가 <a>일 때 href가져오기
-// 	if (tagName == 'a') {
-// 		var href = target.getAttribute("href");
-// 		alert("hyperlink clicked. link is : " + href);		
-// 	}
-// }
-
-function addURLToStorage(URLvalue) {
-	// 스토리지에 url 저장
-	whale.storage.local.set({
-		url: URLvalue
-	}, () => {
-		if (!whale.runtime.lastError) {
-			console.log("url saved");
-		}
-	});
-}
-
-function showStorageData(key) {
-	whale.storage.local.get([key], function (result) {
-		console.log(result);
-	});
-}
-
-function removeStorageData(key) {
-	whale.storage.local.remove([key], () => {
-		if (!whale.runtime.lastError) {
-			console.log("url removed");
-		}
-		showStorageData(key);
-	});
-}
-
-function showDebugText(text) {
-	// 디버그용
-	document.getElementById("forDebug").innerHTML = text;
-}
-
+// url로부터 검색어를 뽑아주는 함수
 function getKeywordFromURL(URL) {
 	var param; // 리턴할 파라미터
 
