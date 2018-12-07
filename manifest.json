@@ -15,9 +15,20 @@
 	"background": {
 		"scripts" : ["background.js"]	
 	}, 
+	"content_scripts": [
+		{
+			"matches" : ["https://search.naver.com/*"],
+			"run_at" : "document_end",
+			"js" : ["contentsScript.js"]
+		}
+	],
 	
 	"permissions": [
 		"tabs",
 		"storage"
-	]
+	],
+
+	"externally_connectable": {
+        "matches": ["https://*.naver.com/*"]
+    }
 }

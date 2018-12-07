@@ -66,10 +66,13 @@ body {
 }
 
 #site-icon {
-	width: 40px;
-	height: 40px;
+	width: 44px;
+	height: 44px;
 	background-color: #1A6DE3;
 	vertical-align: middle;
+	margin-right: 16px;
+	margin-bottom: 8px;
+	border-radius: 4px;
 }
 
 #site-wrap {
@@ -79,7 +82,6 @@ body {
 	visibility: hidden;
 }
 #site-title-wrap {
-	margin-left: 16px;
 	vertical-align: middle;
 }
 
@@ -93,6 +95,8 @@ body {
 	margin-top : 4px;
 	font-size: 14px;
 	color : #ADB5BD;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 #tags-wrap {
@@ -118,6 +122,15 @@ body {
 #tag-add-recommand-text {
 	font-size: 10px;
 	color: #878481;
+	visibility: hidden;
+}
+.tag {
+	color : white;
+	background-color: #1A6DE3;
+	text-align: center;
+	font-size: 12pt;
+	padding: 4px;
+	width: fit-content;
 }
 /* animation class */
 .bounceInUp {
@@ -145,3 +158,8 @@ body {
 	  transform: translate3d(0, 0, 0);
 	}
   }
+
+  /*
+	 css animation ref.
+	 https://github.com/daneden/animate.css/blob/master/animate.css 
+  */
