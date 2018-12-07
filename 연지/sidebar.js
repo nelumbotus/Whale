@@ -60,12 +60,22 @@ function refreshPages(){
 	whale.storage.local.get(["unitArray"], function(result) { 
 		units = result.unitArray; //브라우저가 가장 처음 열릴 때를 위해서, .. 
 
+		if(result.unitArray == null ) { //--- 스토리지에 한번도 저장이 안된 경우
+			units = [];
+		}
+
 		allString = "";
 		for(var i = 0; i < result.unitArray.length; i++) {
 			allString = allString + result.unitArray[i].title + "<br>";		
 		}
-		document.getElementById("stored").innerHTML = allString;
 		//document.getElementById("stored").innerHTML = " " + result.unitArray[0].url;
+
+		whale.storage.local.get(["pairArray"], function(result) {
+			urlSearchKeyPairs = result.pairArray;    
+			if(result.pairArray == null){//-------storage에 한번도 저장이 안된 경우-------
+				urlSearchKeyPairs = [];    
+			}//------------------------------------------------------------------------------
+		});
 	});
 }
 

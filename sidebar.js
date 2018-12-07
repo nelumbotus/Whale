@@ -1,7 +1,40 @@
+//unit객체들을 담은 어레이 입니다.
+//storage에 어레이(units) 단 하나만 저장하고
+//필요 할 때마다 units를 storage에서 뽑아와서 포문을 돌리며 저장된 객체들을 사용합니다.
+var units = []; 
+var urlSearchKeyPairs = [];
 
+//추가하기 를 누를 때 새로 생기고,.. 삭제하기를 누를 때 삭제되고
+function Tunit (url, tags, title) { //url, tag들, 탭 이름 3가지를 하나의 객체로 저장.
+	this.url = url; //스트링 
+	this.tags = tags; //어레이
+	this.title = title;
+}
+Tunit.prototype.getUrl = function() {
+	return this.url;
+}
+Tunit.prototype.getTags = function() {
+	return this.tags;
+}
+Tunit.prototype.getTag = function(i) {
+	return this.tags[i];
+}
+Tunit.prototype.addTag = function(tag) {
+	this.tags.push(tag);
+}
+Tunit.prototype.removeTag = function(tagName) {
+	for (var i = 0; i < this.tags.length; i++) {
+		if(tag[i] === tagName) {
+			this.tags.splice(i, 1);
+			return;
+		}
+	}
+}
 
 // 윈도우가 로드된 후에
 window.onload = function () {
+	refreshPages(); //윈도우가 로드 되자마자 storage에서 units를 가져오고, 현재까지 저장된 페이지들 보여줌.
+
 	var tabURL;
 	var tabTitle;
 	//추가하기 버튼
@@ -16,6 +49,8 @@ window.onload = function () {
 			tabURL = tabs[0].url;
 			tabTitle = tabs[0].title;
 			// 이 함수가 호출되는 타이밍이 늦어서 url을 얻어온 뒤에 ui제어 함수 호출
+			// 키워드, url, title 세개를 묶어 unit 객체를 만들고 스토리지의 unitArray에 추가 -> html 제어
+			unitToStorage(getKeywordFromURL(tabURL),tabURL, tabTitle); //검색어, url, "도메인이름" 전달.
 			clickAddbtn(tabURL, tabTitle);
 		});
 	});
@@ -67,11 +102,62 @@ function clickAddbtn(URL, title) {
 		tag.innerHTML = searchKeyword;
 		document.getElementById("tags-add-wrap").appendChild(tag);
 	}
-	// showStorageData('message');
-	// removeStorageData('message');
-	// // whale.storage.local.get(['message'], (result) => {
-	// // 	whale.storage.local.remove('message');
-	// // });
+}
+
+function refreshPages(){
+	whale.storage.local.get(["unitArray"], function(result) { 
+		units = result.unitArray; //브라우저가 가장 처음 열릴 때를 위해서, .. 
+
+		if(result.unitArray == null ) { //--- 스토리지에 한번도 저장이 안된 경우
+			units = [];
+		}
+
+		allString = "";
+		for(var i = 0; i < result.unitArray.length; i++) {
+			allString = allString + result.unitArray[i].title + "<br>";		
+		}
+		
+		whale.storage.local.get(["pairArray"], function(result) {
+			urlSearchKeyPairs = result.pairArray;    
+			if(result.pairArray == null){//-------storage에 한번도 저장이 안된 경우-------
+				urlSearchKeyPairs = [];    
+			}//------------------------------------------------------------------------------
+		});
+		document.getElementById("stored").innerHTML = allString;
+	});
+}
+
+function unitToStorage(keyword, url,title) { //div에 디버깅 + 스토리지에 저장  --------함수이름 바꿀 것 .. 
+	var searchKey = "";
+	var tagInput = [];
+	tagInput.push(document.getElementsByName("tagInput")[0].value);
+	for (var i = 0; i < urlSearchKeyPairs.length; i++) {
+		if(url === urlSearchKeyPairs[i].url) {
+			searchKey = urlSearchKeyPairs[i].searchKey;
+		}
+	}
+	tagInput.push(searchKey);
+	var newUnit = new Tunit(url,tagInput, title); //일단 태그명 대신에 키워드를 넣었습니다..
+
+	document.getElementById("forDebug").innerHTML = "<b>url</b> = " + newUnit.url 
+		+"<br> <b>tagName</b> = " + newUnit.tags[0]
+		+"<br> <b>tagTitle</b> = " + newUnit.title;
+
+	var stored = false;
+	for (var i = 0; i < units.length; i ++) {
+		if(units[i].url == url) {
+			stored = true;
+			break;
+		}
+		if(!stored) {
+			units.push(newUnit);
+		}
+	}
+	whale.storage.local.set({unitArray: units}, function() {
+		console.log("저장함");
+	});
+	refreshPages(); 	//스토리지에 저장된 unitArray로 units를 갱신하고, units어레이의 모든 unit을
+						// stored <div>에 표시함
 }
 
 function showDebugText(text) {

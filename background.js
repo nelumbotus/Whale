@@ -56,10 +56,10 @@ whale.runtime.onMessage.addListener((message, sender, sendResponse) => {
 					// 이 함수가 호출되는 타이밍이 늦어서 url을 얻어온 뒤에 스토리지 저장
 					var newUrlSearchKeyPair = new UrlSearchKeyPair(tabURL, searchKeyword);
 					UrlSearchKeyPairs.push(newUrlSearchKeyPair);
-					alert(tabURL+ " 검색어 : " + searchKeyword);
-					// whale.storage.local.set({pairArray: UrlSearchKeyPairs}, () => {
-					// 	console.log("pair 저장함");
-					// }); 
+					// alert(tabURL+ " 검색어 : " + searchKeyword);
+					whale.storage.local.set({pairArray: UrlSearchKeyPairs}, () => {
+						console.log("pair 저장함");
+					}); 
 				});
 				isCreated = false;
 			}
