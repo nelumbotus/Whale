@@ -9,7 +9,6 @@ body {
 	padding: 16px;
 	position: relative;
 }
-
 #forDebug {
 	border: 2px solid red;
 }
@@ -23,12 +22,12 @@ body {
 
 #content-wrap {
 	background-color: white;
-	width: 100%;
 	height : 100%;
 	padding: 24px;
 	padding-top: 36px;
 	box-shadow: 0 0 4px 0 #ADB5BD;
 	border-radius: 8px;
+	display: block;
 }
 
 #addBtn-text {
@@ -59,11 +58,7 @@ body {
 	width: fit-content;
 }
 
-#searchBtn {
-	position: absolute;
-	right: 0;
-	top: 16px;
-}
+
 
 #site-icon {
 	width: 44px;
@@ -131,10 +126,106 @@ body {
 	font-size: 12pt;
 	padding: 4px;
 	width: fit-content;
+	display: inline-block;
 }
+
+input[type=text]:focus {
+	border: none;
+	outline: none;
+  }
+
+/* search page*/
+
+#searchArea-wrap {
+	background-color: white;
+	height: 100%;
+	padding: 20px;
+	padding-top: 36px;
+	box-shadow: 0 0 4px 0 #ADB5BD;
+	border-radius: 8px;
+}
+#search-wrap {
+	padding: 4px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 60%;
+	width: 100%;
+}
+#searchInput {
+	display: inline-block;
+	position: absolute;
+	border: none;
+	border-bottom: 2px solid white;
+	background-color: #1A6DE3;
+	width: 230px;
+	left: 40px;
+	top: 0px;
+	font-size: 14pt;
+	color: white;
+}
+
+#searchInput::placeholder {
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 12pt;
+}
+#searchBtn {
+	position: absolute;
+	right: 0;
+	top: 16px;
+	transition: 0.3s;
+	width: fit-content;
+}
+#list-setting {
+	position: absolute;
+	right: 8px;	
+	width: 16px;
+	height: 16px;
+	top: 8px;
+}
+.UnitList {
+	background: #FFFFFF;
+	box-shadow: 0 0 4px 0 #ADB5BD;
+	border-radius: 4px;
+	padding: 20px;
+	margin-bottom: 12px;
+	position: relative;
+}
+.UnitList #list-icon {
+	display: inline-block;
+	width: 44px;
+	height: 44px;
+	background-color: #1A6DE3;
+	vertical-align: middle;
+	margin-right: 16px;
+	margin-bottom: 8px;
+	border-radius: 4px;
+}
+.UnitList #list-title-wrap {
+	display: inline-block;
+	vertical-align: middle;
+}
+.UnitList #list-title {
+	font-size: 12pt;
+	font-weight: bold;
+	color: #262626;
+}
+.UnitList #list-url {
+	margin-top: 6px;
+	margin-bottom: 8px;
+	font-size: 10pt;
+	color: #878481;
+}
+.UnitList #list-tags {
+	font-size: 11pt;
+	color: #1A6DE3;
+}
+
 /* animation class */
 .bounceInUp {
 	animation: bounceInUp 0.5s linear;
+}
+.bounceInLeft {
+	animation: bounceInLeft 0.5s linear;
 }
 
 /* animation */
@@ -149,7 +240,7 @@ body {
 	from {
 	  opacity: 0;
 	  -webkit-transform: translate3d(0, 30px, 0);
-	  transform: translate3d(0, 30px, 0);
+	  transform: translate3d(-100px, 0, 0);
 	}
   
 	to {
@@ -158,6 +249,8 @@ body {
 	  transform: translate3d(0, 0, 0);
 	}
   }
+
+
 
   /*
 	 css animation ref.

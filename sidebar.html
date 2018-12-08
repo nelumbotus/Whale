@@ -7,13 +7,11 @@
 </head>
 
 <body>
-	<div id="forDebug"></div>
-	<div id="stored">..</div>
 	<div id="title-wrap">
 		<span id="title"># Remembering</span>
 		<!--검색 아이콘 svg-->
 		<div id="searchBtn">
-				<svg class="imageBtn svg" width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<svg id="searchBtn_svg" class="imageBtn svg inline-block" width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 					<!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
 					<desc>Created with Sketch.</desc>
 					<defs></defs>
@@ -26,6 +24,7 @@
 						</g>
 					</g>
 				</svg>
+				<input type="text" id="searchInput" class="inline-block" placeholder="태그로 검색하기">
 		</div>
 		
 	</div>
@@ -45,7 +44,6 @@
 					   </g>
 				   </g>
 			   </svg>
-	   
 			   <div class="inline-block text-align-center" id="addBtn-text">추가하기 </div>
 			  
 		</div>
@@ -63,11 +61,37 @@
 
 			<div id="tags-add-wrap">
 				<p id="tag-add-recommand-text">검색어 기반 추천</p>
-				<input type ="text" name="tagInput" placeholder="직접추가"> <br>
+				<div id="recommanded-tag-area"></div>
+				<input type ="text" id="tagInput" placeholder="직접추가"> <br>
 				<div id="addTagBtn">태그 추가하기</div>
 			</div>
 		</div>
 		
+	</div>
+	<div id="searchArea-wrap">
+		<div id="search-wrap">
+			<!--
+			<div class="UnitList">
+				<div id="list-icon">
+	
+				</div>
+				<div id="list-title-wrap">
+					<div id="list-title">제목</div>
+					<div id="list-url">주소</div>
+					<div id="list-tags">
+						<div class="list-tag">
+							#태그
+						</div>
+					</div>
+				</div>
+				<div id="list-setting">...</div>
+				<div id="list-handleArea">
+	
+				</div>
+			</div>
+		-->
+		</div>
+		<div class="line"></div>
 	</div>
 
 	<script src="sidebar.js"></script>
