@@ -3,7 +3,10 @@ body {
 	font-family: 'NanumSquare';
 	margin: auto 0;
 	overflow: hidden;
+	letter-spacing: -0.7px;
+
 }
+
 
 #title-wrap {
 	padding: 16px;
@@ -129,6 +132,10 @@ body {
 	display: inline-block;
 }
 
+input[type=text] {
+	border: none;
+}
+
 input[type=text]:focus {
 	border: none;
 	outline: none;
@@ -181,6 +188,7 @@ input[type=text]:focus {
 	width: 16px;
 	height: 16px;
 	top: 8px;
+	cursor: pointer;
 }
 .UnitList {
 	background: #FFFFFF;
@@ -208,6 +216,7 @@ input[type=text]:focus {
 	font-size: 12pt;
 	font-weight: bold;
 	color: #262626;
+	line-height: 1.5em;
 }
 .UnitList #list-url {
 	margin-top: 6px;
@@ -216,10 +225,46 @@ input[type=text]:focus {
 	color: #878481;
 }
 .UnitList #list-tags {
-	font-size: 11pt;
+	font-size: 10pt;
 	color: #1A6DE3;
+}	
+.UnitList #list-handleArea {
+	margin-top: 12px;
+	display: none;
+	transition: 0.3s;
 }
-
+.UnitList #list-handle-tags {
+	margin-top: 12px;
+	margin-bottom: 18px;
+}
+.UnitList .list-handle-tagEle {
+	display: inline-block;
+	margin-right: 6px;
+	background-color: #1A6DE3;
+	color : white;
+	padding: 4px;
+	font-size: 10pt;
+}
+#list-handle-tagInput {
+	margin-left: 8px;
+	font-size: 10pt;
+	color: #878481;
+	
+}
+#list-handle-tagInput::placeholder {
+	color: #CED4DA;
+}
+#list-handle-delete {
+	font-size: 11pt;
+	color : #FD5F5F;
+	position: absolute;
+	bottom: 18px;
+	right: 18px;
+	cursor: pointer;
+}
+#list-handle-addTagBtn {
+	cursor: pointer;
+}
 /* animation class */
 .bounceInUp {
 	animation: bounceInUp 0.5s linear;

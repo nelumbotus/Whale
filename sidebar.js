@@ -1,3 +1,4 @@
+var maxTags = 3;
 function Tunit (url, tags, title) { //url, tag들, 탭 이름 3가지를 하나의 객체로 저장.
 	this.url = url; //스트링 
 	this.tags = tags; //어레이
@@ -28,7 +29,7 @@ Tunit.prototype.removeTag = function(tagName) {
 // var list = listProto.cloneNode(true)로 객체 복사 후 search-wrap에 자식으로 붙여 사용
 var listProto = document.createElement('div');
 listProto.classList.add("UnitList");
-listProto.innerHTML = '<div id="list-title-wrap"><div id="list-title">제목</div><div id="list-url">주소</div><div id="list-tags"><div class="list-tag inline-block">#태그</div></div></div><div id="list-setting">...</div><div id="list-handleArea"></div>'
+listProto.innerHTML = '<div id="list-title-wrap"><div id="list-title">제목</div><div id="list-url">주소</div><div id="list-tags"><div class="list-tag inline-block">#태그</div></div></div><div id="list-setting"><img src="icons/menu.png"></div><div id="list-handleArea">X를 눌러 태그 삭제<div id="list-handle-tags"></div><img src="icons/plus_blue.png" style="width: 14px; height: 14px;" id="list-handle-addTagBtn"><input type="text" id="list-handle-tagInput" placeholder="직접 추가"><div id="list-handle-delete">삭제</div></div>'
 
 var units;
 var UrlKeyPairs;
@@ -80,35 +81,15 @@ function showSearchArea() {
 
     //최근 추가 순으로 보여주기 
     for (var i = units.length-1; i >= 0; i -- ) {
-        var ListEle = listProto.cloneNode(true);
-        ListEle.querySelector("#list-title").innerHTML = units[i].title;
-        ListEle.querySelector("#list-url").innerHTML = units[i].url;
-
-        var tagsString = "";
-        for (var tagIdx = 0; tagIdx < units[i].tags.length; tagIdx ++) {
-             var tmpString = "# " + units[i].tags[tagIdx] + "   ";
-            tagsString += tmpString;
-        }
-        ListEle.querySelector("#list-tags").innerHTML = tagsString;
-        document.getElementById("search-wrap").appendChild(ListEle);
+        document.getElementById("search-wrap").appendChild(createListEle(units[i]));
     }
 
     document.getElementById("searchInput").addEventListener("keyup", (e) => {
         e.preventDefault();
         if(document.getElementById("searchInput").value === "") 
-        {
-            for (var i = units.length-1; i > 0; i -- ) {
-                var ListEle = listProto.cloneNode(true);
-                ListEle.querySelector("#list-title").innerHTML = units[i].title;
-                ListEle.querySelector("#list-url").innerHTML = units[i].url;
-        
-                var tagsString = "";
-                for (var tagIdx = 0; tagIdx < units[i].tags.length; tagIdx ++) {
-                     var tmpString = "# " + units[i].tags[tagIdx] + "   ";
-                    tagsString += tmpString;
-                }
-                ListEle.querySelector("#list-tags").innerHTML = tagsString;
-                document.getElementById("search-wrap").appendChild(ListEle);
+        {   
+            for (var i = units.length-1; i >= 0; i -- ) {
+                document.getElementById("search-wrap").appendChild(createListEle(units[i]));
             }
         }
         else {
@@ -231,25 +212,31 @@ function handleAddUI(unit) {
         var tagInput = tagInputForm.value;
         if(tagInput === "" || tagInput === undefined) return;
 
-        addTagByUrl(unit.url, tagInput);
+        addTagByUrl(unit.url, tagInput, function(flag) {
+            if(flag) {
+                recommandTagArea.style.visibility = "visible";
+                var tag = document.createElement("div");
+                tag.classList.add("tag");
+                tag.innerHTML = tagInput;
+                recommandTagArea.appendChild(tag);
+            }
+        });
 
-        recommandTagArea.style.visibility = "visible";
-        var tag = document.createElement("div");
-        tag.classList.add("tag");
-        tag.innerHTML = tagInput;
-        recommandTagArea.appendChild(tag);
+        
     });
     tagInputForm.addEventListener("keyup", (e)=> {
         e.preventDefault();
         if(e.keyCode === 13 && tagInputForm.value !== "") { // input tag에서 enter btn 눌렀을 때
-            addTagByUrl(unit.url, tagInputForm.value);
-
-            recommandTagArea.style.visibility = "visible";
-            var tag = document.createElement("div");
-            tag.classList.add("tag");
-            tag.innerHTML = tagInputForm.value;
-            recommandTagArea.appendChild(tag);
-            tagInputForm.value = "";
+            addTagByUrl(unit.url, tagInputForm.value, function(flag) {
+                if(flag) {
+                    recommandTagArea.style.visibility = "visible";
+                    var tag = document.createElement("div");
+                    tag.classList.add("tag");
+                    tag.innerHTML = tagInputForm.value;
+                    recommandTagArea.appendChild(tag);
+                    tagInputForm.value = "";
+                }
+            });
         }
     });
 }
@@ -264,37 +251,133 @@ function findWithTag(targetTag) {
         for (var k = 0; k < units[i].tags.length; k++) {
             if(targetTag === units[i].tags[k]) {
                 
-                var ListEle = listProto.cloneNode(true);
-                ListEle.querySelector("#list-title").innerHTML = units[i].title;
-                ListEle.querySelector("#list-url").innerHTML = units[i].url;
-        
-                var tagsString = "";
-                for (var tagIdx = 0; tagIdx < units[i].tags.length; tagIdx ++) {
-                        var tmpString = "# " + units[i].tags[tagIdx] + "   ";
-                    tagsString += tmpString;
-                }
-                ListEle.querySelector("#list-tags").innerHTML = tagsString;
-                document.getElementById("search-wrap").appendChild(ListEle);
+                document.getElementById("search-wrap").appendChild(createListEle(units[i]));
                 break;
             }
         }
     }
 }
 
-function addTagByUrl(url, tagName) {
-    getUnitArrayFromStorage(function() {
-        for (var i = 0; i < units.length; i++) {
-            if(units[i].url === url) {
-                units[i].tags.push(tagName);
-                console.log("태그 추가");
-                break;
-            }
+function addTagByUrl(url, tagName, callBack) {//-----------------------------------------------추가
+   getUnitArrayFromStorage(function() {
+       for (var i = 0; i < units.length; i++) {
+           if(units[i].url === url) {
+
+                   //태그를 추가 할 수 없는 경우1 : 태그 개수 제한 넘음.
+                   console.log("현재 태그의 개수" + units[i].tags.length);
+                    if(units[i].tags.length >= maxTags){
+
+                       callBack(false);
+                       return;
+                    }
+                    //태그를 추가 할 수 없는 경우2 : 이미 있는 태그임.
+                    for(var k = 0; k < units[i].tags.length; k++){
+                        if(units[i].tags[k] == tagName){
+
+                           callBack(false);
+                           return;
+                        }
+                   }
+                   units[i].tags.push(tagName);
+                   whale.storage.local.set({unitArray : units}, function() {
+
+                       callBack(true);
+                       return;
+                   });
+                   break;
+           }
+       }
+   })
+}
+function createListEle(unit) {
+    var ListEle = listProto.cloneNode(true);
+    ListEle.querySelector("#list-title").innerHTML = unit.title;
+    ListEle.querySelector("#list-url").innerHTML = unit.url;
+
+    var tagArea = ListEle.querySelector("#list-handle-tags");
+    var tagsString = "";
+    for (var tagIdx = 0; tagIdx < unit.tags.length; tagIdx ++) {
+        var tmpString = "# " + unit.tags[tagIdx] + "   ";
+        tagsString += tmpString;
+
+        var tag = document.createElement('div');
+        tag.classList.add("list-handle-tagEle");
+        tag.innerHTML = unit.tags[tagIdx];
+        tag.setAttribute('name', unit.tags[tagIdx]);// 나중에 삭제할 때 value로 태그 값을 정확하게 받아오도록
+        tagArea.appendChild(tag);
+    }
+    ListEle.querySelector("#list-tags").innerHTML = tagsString;
+
+    //태그 추가하기
+    var tagInputForm = ListEle.querySelector("#list-handle-tagInput");
+    tagInputForm.addEventListener("keyup", (e)=> {
+        if(e.keyCode === 13 && tagInputForm.value !== "") { //enter button
+            var tagName  = tagInputForm.value;
+            unit.tags.push(tagName);
+            addTagByUrl(unit.url, tagName, function(flag) { //스토리지 저장용
+                if(flag) {
+                    tagInputForm.value = "";
+                    //ui에 나타나게
+                    var tag = document.createElement('div');
+                    tag.classList.add("list-handle-tagEle");
+                    tag.innerHTML = tagName;
+                    tag.setAttribute('name', tagName);
+                    tagArea.appendChild(tag);
+                }
+            }); 
+            
         }
-        whale.storage.local.set({unitArray : units}, function() {
-            console.log("태그 추가 완료")
-            console.log(units);
-        });
-    })
+    });
+    ListEle.querySelector("#list-handle-addTagBtn").addEventListener("click", ()=> {
+        var tagName  = tagInputForm.value;
+        unit.tags.push(tagName);
+        addTagByUrl(unit.url, tagName, function(flag) { //스토리지 저장용
+            if(flag) {
+                tagInputForm.value = "";
+                //ui에 나타나게
+                var tag = document.createElement('div');
+                tag.classList.add("list-handle-tagEle");
+                tag.innerHTML = tagName;
+                tag.setAttribute('name', tagName);
+                tagArea.appendChild(tag);
+            }
+        }); 
+        
+    });
+
+    var listHandleArea = ListEle.querySelector("#list-handleArea");
+    ListEle.querySelector("#list-setting").addEventListener("click", ()=> {
+        if(listHandleArea.style.display == "none") {
+            listHandleArea.style.display = "block";
+        }
+        else {
+            listHandleArea.style.display = "none";
+            var tagsString = "";
+            for (var tagIdx = 0; tagIdx < unit.tags.length; tagIdx ++) {
+                var tmpString = "# " + unit.tags[tagIdx] + "   ";
+                tagsString += tmpString; 
+            }
+            ListEle.querySelector("#list-tags").innerHTML = tagsString;
+            console.log(tagsString);
+        }
+    });
+    ListEle.querySelector("#list-handle-delete").addEventListener("click", ()=> {
+        removeUnit(unit.url);
+        ListEle.style.display = "none";
+    });
+    
+    return ListEle;
+}
+function removeUnit(url) {
+    for(var i = 0; i < units.length; i++){
+        if(units[i].url == url){
+            units.splice(i,1);
+            break;
+        }
+    }
+    whale.storage.local.set({unitArray : units}, ()=> {
+
+    });
 }
 
 function getPairArrayFromStorage(callbackFunc) {
