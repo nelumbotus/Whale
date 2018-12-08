@@ -4,9 +4,7 @@ body {
 	margin: auto 0;
 	overflow: hidden;
 	letter-spacing: -0.7px;
-
 }
-
 
 #title-wrap {
 	padding: 16px;
@@ -78,6 +76,7 @@ body {
 	padding-top: 8px;
 	padding-bottom: 16px;
 	visibility: hidden;
+
 }
 #site-title-wrap {
 	vertical-align: middle;
@@ -130,6 +129,16 @@ body {
 	padding: 4px;
 	width: fit-content;
 	display: inline-block;
+	margin-right : 8px;
+}
+#tagInput {
+	font-size: 11pt;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 8px;
+}
+#tagInput::placeholder {
+	color: #CED4DA;
 }
 
 input[type=text] {
@@ -139,6 +148,10 @@ input[type=text] {
 input[type=text]:focus {
 	border: none;
 	outline: none;
+  }
+
+  #recommanded-tag-area {
+	  margin-bottom: 16px;
   }
 
 /* search page*/
@@ -232,6 +245,7 @@ input[type=text]:focus {
 	margin-top: 12px;
 	display: none;
 	transition: 0.3s;
+	color: #878481;
 }
 .UnitList #list-handle-tags {
 	margin-top: 12px;
@@ -265,6 +279,26 @@ input[type=text]:focus {
 #list-handle-addTagBtn {
 	cursor: pointer;
 }
+
+/*set*/
+#setIconBtn {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	cursor: pointer;
+}
+
+#set-wrap {
+	background-color: white;
+	height : 100%;
+	padding: 24px;
+	padding-top: 36px;
+	box-shadow: 0 0 4px 0 #ADB5BD;
+	border-radius: 8px;
+	display: block;
+	position: fixed;
+}
+
 /* animation class */
 .bounceInUp {
 	animation: bounceInUp 0.5s linear;
@@ -285,7 +319,7 @@ input[type=text]:focus {
 	from {
 	  opacity: 0;
 	  -webkit-transform: translate3d(0, 30px, 0);
-	  transform: translate3d(-100px, 0, 0);
+	  transform: translate3d(0, 30px, 0);
 	}
   
 	to {
@@ -294,8 +328,6 @@ input[type=text]:focus {
 	  transform: translate3d(0, 0, 0);
 	}
   }
-
-
 
   /*
 	 css animation ref.

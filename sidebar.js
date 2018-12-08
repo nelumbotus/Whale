@@ -1,4 +1,6 @@
 var maxTags = 3;
+var showAll = true;
+
 function Tunit (url, tags, title) { //url, tag들, 탭 이름 3가지를 하나의 객체로 저장.
 	this.url = url; //스트링 
 	this.tags = tags; //어레이
@@ -29,10 +31,14 @@ Tunit.prototype.removeTag = function(tagName) {
 // var list = listProto.cloneNode(true)로 객체 복사 후 search-wrap에 자식으로 붙여 사용
 var listProto = document.createElement('div');
 listProto.classList.add("UnitList");
-listProto.innerHTML = '<div id="list-title-wrap"><div id="list-title">제목</div><div id="list-url">주소</div><div id="list-tags"><div class="list-tag inline-block">#태그</div></div></div><div id="list-setting"><img src="icons/menu.png"></div><div id="list-handleArea">X를 눌러 태그 삭제<div id="list-handle-tags"></div><img src="icons/plus_blue.png" style="width: 14px; height: 14px;" id="list-handle-addTagBtn"><input type="text" id="list-handle-tagInput" placeholder="직접 추가"><div id="list-handle-delete">삭제</div></div>'
+listProto.innerHTML = '<div id="list-title-wrap"><div id="list-title">제목</div><div id="list-url">주소</div><div id="list-tags"><div class="list-tag inline-block">#태그</div></div></div><div id="list-setting"><img src="icons/menu.png"></div><div id="list-handleArea"><div class="line" style="margin-bottom: 8px;"></div>X를 눌러 태그 삭제<div id="list-handle-tags"></div><img src="icons/plus_blue.png" style="width: 14px; height: 14px;" id="list-handle-addTagBtn"><input type="text" id="list-handle-tagInput" placeholder="직접 추가"><div id="list-handle-delete">삭제</div></div>'
 
 var units;
 var UrlKeyPairs;
+
+whale.sidebarAction.onClicked.addListener(result => {
+    if(result.opened) location.reload();
+});
 
 window.onload = function() {
     init();
@@ -86,14 +92,21 @@ function showSearchArea() {
 
     document.getElementById("searchInput").addEventListener("keyup", (e) => {
         e.preventDefault();
+        
+        
         if(document.getElementById("searchInput").value === "") 
         {   
+            if(showAll) return;
+            if(!showAll) showAll = true;
+
             for (var i = units.length-1; i >= 0; i -- ) {
                 document.getElementById("search-wrap").appendChild(createListEle(units[i]));
             }
         }
         else {
+            showAll = false;
             findWithTag(document.getElementById("searchInput").value);
+            
         }
     });
 
@@ -111,6 +124,11 @@ function hideSearchArea() {
     while(searchWrap.hasChildNodes()) {
         searchWrap.removeChild(searchWrap.firstChild);
     }
+    var myTimer = setTimeout(function() {
+        location.reload();
+        clearTimeout(myTimer);
+    }, 300);
+    
 }
 
 function ClickAddBtn(URL, title) {

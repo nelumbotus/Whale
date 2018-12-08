@@ -26,7 +26,6 @@
 				</svg>
 				<input type="text" id="searchInput" class="inline-block" placeholder="태그로 검색하기">
 		</div>
-		
 	</div>
 
 	<div id="content-wrap">
@@ -62,8 +61,8 @@
 			<div id="tags-add-wrap">
 				<p id="tag-add-recommand-text">검색어 기반 추천</p>
 				<div id="recommanded-tag-area"></div>
+				<div id="addTagBtn" style="vertical-align: middle; cursor : pointer; display : inline-block"><img src="icons/plus_blue.png" style="width : 18px; height : 18px;"></div>
 				<input type ="text" id="tagInput" placeholder="직접추가"> <br>
-				<div id="addTagBtn">태그 추가하기</div>
 			</div>
 		</div>
 		
@@ -86,6 +85,7 @@
 				</div>
 				<div id="list-setting"><img src="icons/menu.png"></div>
 				<div id="list-handleArea">
+					<div class="line"></div>
 					X를 눌러 태그 삭제
 					<div id="list-handle-tags"></div>
 					<img src="icons/plus_blue.png" style="width: 14px; height: 14px;" id="list-handle-addTagBtn">
@@ -97,8 +97,9 @@
 		</div>
 		<div class="line"></div>
 	</div>
-	<div id="set">
-		
+	<img src="icons/setting.svg" id="setIconBtn">
+	<div id="set-wrap">
+		<img src="icons/setting.svg" id="setIcon">
 	</div>
 	<script src="sidebar.js"></script>
 </body>
