@@ -1,4 +1,4 @@
-var maxTags = 3;
+var maxTags = 4;
 var showAll = true;
 
 function Tunit (url, tags, title) { //url, tag들, 탭 이름 3가지를 하나의 객체로 저장.
@@ -127,7 +127,7 @@ function hideSearchArea() {
     var myTimer = setTimeout(function() {
         location.reload();
         clearTimeout(myTimer);
-    }, 300);
+    }, 250);
     
 }
 
@@ -215,10 +215,9 @@ function handleAddUI(unit) {
 
     if(unit.tags.length > 0) { // unit에 태그가 있으면
         recommandTagArea.style.visibility = "visible";
+        document.getElementById("tag-add-recommand-text").style.visibility = "visible";
         for (var i = 0; i < unit.tags.length; i++) {
-            var tag = document.createElement("div");
-            tag.classList.add("tag");
-            tag.innerHTML = unit.tags[i];
+            var tag = createTagEle_main(unit.tags[i], unit.url);
             recommandTagArea.appendChild(tag);
         }
         
@@ -233,9 +232,7 @@ function handleAddUI(unit) {
         addTagByUrl(unit.url, tagInput, function(flag) {
             if(flag) {
                 recommandTagArea.style.visibility = "visible";
-                var tag = document.createElement("div");
-                tag.classList.add("tag");
-                tag.innerHTML = tagInput;
+                var tag = createTagEle_main(tagInput.value, unit.url);
                 recommandTagArea.appendChild(tag);
             }
         });
@@ -248,11 +245,9 @@ function handleAddUI(unit) {
             addTagByUrl(unit.url, tagInputForm.value, function(flag) {
                 if(flag) {
                     recommandTagArea.style.visibility = "visible";
-                    var tag = document.createElement("div");
-                    tag.classList.add("tag");
-                    tag.innerHTML = tagInputForm.value;
+
+                    var tag = createTagEle_main(tagInput.value, unit.url);
                     recommandTagArea.appendChild(tag);
-                    tagInputForm.value = "";
                 }
             });
         }
@@ -307,6 +302,41 @@ function addTagByUrl(url, tagName, callBack) {//--------------------------------
        }
    })
 }
+function createTagEle_main(tagName, url) {
+    var tag = document.createElement("div");
+    tag.classList.add("tag");
+    tag.innerHTML = tagName;
+    // x 추가
+    var removeBtn = document.createElement('img');
+    removeBtn.setAttribute('src', 'icons/close_white.svg');
+    removeBtn.setAttribute('style', 'cursor:pointer; width:14px; vertical-align: middle; margin-left: 12px;');
+    
+    removeBtn.onclick = function() {
+        removeTagFromUnit(url, tagName);
+        tag.style.display = "none";
+    }
+    tag.appendChild(removeBtn);
+    return tag
+}
+
+function createTagEle_search(tagName, url) {
+    var tag = document.createElement("div");
+    tag.classList.add("list-handle-tagEle");
+    tag.innerHTML = tagName;
+
+    // x 추가
+    var removeBtn = document.createElement('img');
+    removeBtn.setAttribute('src', 'icons/close_white.svg');
+    removeBtn.setAttribute('style', 'cursor:pointer; width:12px; vertical-align: middle; margin-left: 8px;');
+    
+    removeBtn.onclick = function() {
+        removeTagFromUnit(url, tagName);
+        tag.style.display = "none";
+    }
+    tag.appendChild(removeBtn);
+    return tag
+}
+
 function createListEle(unit) {
     var ListEle = listProto.cloneNode(true);
     ListEle.querySelector("#list-title").innerHTML = unit.title;
@@ -318,10 +348,7 @@ function createListEle(unit) {
         var tmpString = "# " + unit.tags[tagIdx] + "   ";
         tagsString += tmpString;
 
-        var tag = document.createElement('div');
-        tag.classList.add("list-handle-tagEle");
-        tag.innerHTML = unit.tags[tagIdx];
-        tag.setAttribute('name', unit.tags[tagIdx]);// 나중에 삭제할 때 value로 태그 값을 정확하게 받아오도록
+        var tag = createTagEle_search(unit.tags[tagIdx], unit.url);
         tagArea.appendChild(tag);
     }
     ListEle.querySelector("#list-tags").innerHTML = tagsString;
@@ -331,15 +358,13 @@ function createListEle(unit) {
     tagInputForm.addEventListener("keyup", (e)=> {
         if(e.keyCode === 13 && tagInputForm.value !== "") { //enter button
             var tagName  = tagInputForm.value;
+
             unit.tags.push(tagName);
             addTagByUrl(unit.url, tagName, function(flag) { //스토리지 저장용
                 if(flag) {
                     tagInputForm.value = "";
                     //ui에 나타나게
-                    var tag = document.createElement('div');
-                    tag.classList.add("list-handle-tagEle");
-                    tag.innerHTML = tagName;
-                    tag.setAttribute('name', tagName);
+                    var tag = createTagEle_search(tagName, unit.url);
                     tagArea.appendChild(tag);
                 }
             }); 
@@ -353,10 +378,7 @@ function createListEle(unit) {
             if(flag) {
                 tagInputForm.value = "";
                 //ui에 나타나게
-                var tag = document.createElement('div');
-                tag.classList.add("list-handle-tagEle");
-                tag.innerHTML = tagName;
-                tag.setAttribute('name', tagName);
+                var tag = createTagEle_search(tagName, unit.url);
                 tagArea.appendChild(tag);
             }
         }); 
@@ -386,6 +408,7 @@ function createListEle(unit) {
     
     return ListEle;
 }
+
 function removeUnit(url) {
     for(var i = 0; i < units.length; i++){
         if(units[i].url == url){
@@ -395,6 +418,27 @@ function removeUnit(url) {
     }
     whale.storage.local.set({unitArray : units}, ()=> {
 
+    });
+}
+
+function removeTagFromUnit(url, tag) {
+    //unit에서 tag찾아서 (반드시있음) splice하고 종료..
+    console.log(" --- removeTagFromUnit------");
+    for(var i = 0; i < units.length; i++){
+        if(units[i].url == url){
+            for(var k = 0; k < units[i].tags.length; k++) {
+                console.log(units[i].tags[k]);
+                if(units[i].tags[k] === tag){
+                    units[i].tags.splice(k,1);
+                    break;
+                }
+            }
+            break; //다른 유닛은 넘어가구
+        }
+    }
+    //스토리지에 units 다시 넣기!
+    whale.storage.local.set({unitArray: units}, function() {
+        console.log(units);
     });
 }
 
