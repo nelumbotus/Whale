@@ -234,12 +234,14 @@ input[type=text]:focus {
 	font-weight: bold;
 	color: #262626;
 	line-height: 1.5em;
+	cursor: pointer;
 }
 .UnitList #list-url {
 	margin-top: 6px;
 	margin-bottom: 8px;
 	font-size: 10pt;
 	color: #878481;
+	cursor: pointer;
 }
 .UnitList #list-tags {
 	font-size: 10pt;
@@ -264,6 +266,7 @@ input[type=text]:focus {
 	padding-left: 14px;
 	font-size: 10pt;
 	border-radius: 100px;
+	margin-bottom: 6px;
 }
 #list-handle-tagInput {
 	margin-left: 8px;
@@ -293,16 +296,34 @@ input[type=text]:focus {
 	bottom: 20px;
 	cursor: pointer;
 }
+#set-title {
+	font-size : 14pt; 
+	color: #878481; 
+	display: inline-block;
+	position: absolute;
+	top: 42px;
+	margin-left: 12px;
+	font-weight: bold;
+}
+#setCloseBtn {
+	width: 24px;
+	position: absolute;
+	display: inline-block;
+	top: 42px;
+	right: 56px;
+	cursor: pointer;
+}
 
 #set-wrap {
 	background-color: white;
 	height : 100%;
 	padding: 24px;
 	padding-top: 36px;
-	box-shadow: 0 0 4px 0 #ADB5BD;
-	border-radius: 8px;
-	display: block;
 	position: fixed;
+	top:0;
+	width: 100%;
+	overflow-y: scroll;
+	display: none;
 }
 
 /* animation class */

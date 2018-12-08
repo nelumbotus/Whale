@@ -17,7 +17,7 @@
 	}, 
 	"content_scripts": [
 		{
-			"matches" : ["https://search.naver.com/*"],
+			"matches" : ["https://search.naver.com/*", "https://www.google.com/*", "https://www.google.co.kr/*"],
 			"run_at" : "document_end",
 			"js" : ["contentsScript.js"]
 		}

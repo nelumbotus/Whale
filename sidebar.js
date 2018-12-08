@@ -35,6 +35,7 @@ listProto.innerHTML = '<div id="list-title-wrap"><div id="list-title">제목</di
 
 var units;
 var UrlKeyPairs;
+var allTags;
 
 whale.sidebarAction.onClicked.addListener(result => {
     if(result.opened) location.reload();
@@ -66,6 +67,15 @@ window.onload = function() {
         }
         isSearchAreaOpen =!isSearchAreaOpen;
     });
+
+    document.getElementById("setIconBtn").addEventListener("click", () => {
+        document.getElementById("set-wrap").style.display = "block";
+
+    });
+    document.getElementById("setCloseBtn").addEventListener("click", ()=> {
+        document.getElementById("set-wrap").style.display = "none";
+        location.reload();
+    });
 }
 
 function init() {
@@ -75,9 +85,50 @@ function init() {
     getUnitArrayFromStorage( () => {
         console.log(units);
     });
+    getTagsFromStorage( () => {
+        console.log(allTags);
+        var tagArea = document.getElementById("set-tag-area");
+        //가지고 있는 태그들 보여주기
+        for (var i = 0; i < allTags.length; i++) {
+            var tag = createTagEle_set(allTags[i]);
+            tagArea.appendChild(tag);
+        }
+    });
 
     console.log("------init------");
 }
+
+function removeUnitFromTag(tagName) {
+    console.log("-------remove unit from tag start");
+
+    var unitLength = units.length;
+    for (var i = 0; i < unitLength; i++) {
+        for (var k = 0; k < units[i].tags.length; k++) {
+            if(units[i].tags[k] === tagName) {
+                units.splice(i, 1);
+                unitLength -= 1;
+                i -= 1;
+                break;
+            }
+        }
+    }
+    whale.storage.local.set({unitArray : units}, ()=> {
+        console.log("-------remove unit from tag");
+        console.log(units);
+    });
+}
+function removeTagFromTagArr(tagName) {
+    for (var i = 0; i < allTags.length; i++) {
+        if(allTags[i] === tagName) {
+            allTags.splice(i, 1);
+            break;
+        }
+    }
+    whale.storage.local.set({tagArr: allTags}, ()=> {
+        console.log(allTags);
+    });
+}
+
 function showSearchArea() {
     document.getElementById("title").style.visibility = "hidden";
     document.getElementById("searchBtn").style.right = '250px';
@@ -232,7 +283,7 @@ function handleAddUI(unit) {
         addTagByUrl(unit.url, tagInput, function(flag) {
             if(flag) {
                 recommandTagArea.style.visibility = "visible";
-                var tag = createTagEle_main(tagInput.value, unit.url);
+                var tag = createTagEle_main(tagInput, unit.url);
                 recommandTagArea.appendChild(tag);
             }
         });
@@ -246,7 +297,7 @@ function handleAddUI(unit) {
                 if(flag) {
                     recommandTagArea.style.visibility = "visible";
 
-                    var tag = createTagEle_main(tagInput.value, unit.url);
+                    var tag = createTagEle_main(tagInputForm.value, unit.url);
                     recommandTagArea.appendChild(tag);
                 }
             });
@@ -272,7 +323,21 @@ function findWithTag(targetTag) {
 }
 
 function addTagByUrl(url, tagName, callBack) {//-----------------------------------------------추가
-   getUnitArrayFromStorage(function() {
+   // allTags에 태그들 추가
+   var isTagExist = false;
+   for (var i = 0; i < allTags.length; i++) {
+        if(allTags[i] === tagName) {
+            isTagExist = true;
+            break;
+        }
+   } 
+   if(!isTagExist) {
+       allTags.push(tagName);
+       document.getElementById("set-tag-area").appendChild(createTagEle_set(tagName));
+   }
+   whale.storage.local.set({tagArr : allTags});
+
+    getUnitArrayFromStorage(function() {
        for (var i = 0; i < units.length; i++) {
            if(units[i].url === url) {
 
@@ -300,7 +365,7 @@ function addTagByUrl(url, tagName, callBack) {//--------------------------------
                    break;
            }
        }
-   })
+   });
 }
 function createTagEle_main(tagName, url) {
     var tag = document.createElement("div");
@@ -337,10 +402,37 @@ function createTagEle_search(tagName, url) {
     return tag
 }
 
+function createTagEle_set(tagName) {
+    var tag = document.createElement('div');
+    tag.classList.add("tag");
+    tag.style.paddingRight = "12px";
+    tag.style.paddingLeft = "12px";
+    tag.style.cursor = "pointer";
+    tag.innerHTML = tagName;
+
+    //누르면 지워지게
+    tag.addEventListener("click", ()=> {
+        var confirmed = confirm(tagName + " 태그를 정말 삭제하시겠습니까? 관련된 게시글이 모두 사라집니다.");
+        if(confirmed) {
+            removeUnitFromTag(tagName);
+            removeTagFromTagArr(tagName);
+            tag.style.display = "none";
+        }
+    });
+
+    return tag
+}
+
 function createListEle(unit) {
     var ListEle = listProto.cloneNode(true);
     ListEle.querySelector("#list-title").innerHTML = unit.title;
+    ListEle.querySelector("#list-title").addEventListener("click", () => {
+        whale.tabs.create({'url': unit.url});
+    });
     ListEle.querySelector("#list-url").innerHTML = unit.url;
+    ListEle.querySelector("#list-url").addEventListener("click", () => {
+        whale.tabs.create({'url': unit.url});
+    });
 
     var tagArea = ListEle.querySelector("#list-handle-tags");
     var tagsString = "";
@@ -463,6 +555,19 @@ function getUnitArrayFromStorage(callbackFunc) {
         }
         callbackFunc();
     });
+}
+function getTagsFromStorage(callbackFunc) {
+    whale.storage.local.get(['tagArr'], function(result) {
+        if(result.tagArr === null || result.tagArr === undefined) {
+            allTags = [];
+            whale.storage.local.set({tagArr: allTags}, () => {
+            });
+        }
+        else {
+            allTags = result.tagArr;
+        }
+        callbackFunc();
+    })
 }
 
 // 의도하지 않은 페이지 전환 막기 

@@ -58,6 +58,9 @@ function getKeywordFromURL(URL) {
 		param = params[0]; // 잘린 params 중 처음 요소 얻기
 	} else return; // 검색 엔진이 아닌 경우 아무것도 리턴하지 않음 
 
-  	param = decodeURIComponent(param); // url 디코드
+    param = decodeURIParameter(param); // url 디코드  
 	return param;
+}
+function decodeURIParameter(str) {
+    return decodeURIComponent((str+'').replace(/\+/g, '%20'));
 }
