@@ -94,18 +94,21 @@ window.onload = function() {
 whale.tabs.onActivated.addListener(() => {
     hideAddUI();
 });
+whale.tabs.onUpdated.addListener(() => {
+    hideAddUI();
+});
 
 
 
 function init() {
     getPairArrayFromStorage( () => {
-        console.log(UrlKeyPairs);
+        //.log(UrlKeyPairs);
     });
     getUnitArrayFromStorage( () => {
-        console.log(units);
+        //console.log(units);
     });
     getTagsFromStorage( () => {
-        console.log(allTags);
+        //console.log(allTags);
         var tagArea = document.getElementById("set-tag-area");
         //가지고 있는 태그들 보여주기
         for (var i = 0; i < allTags.length; i++) {
@@ -114,11 +117,11 @@ function init() {
         }
     });
 
-    console.log("------init------");
+    //console.log("------init------");
 }
 
 function removeUnitFromTag(tagName) {
-    console.log("-------remove unit from tag start");
+    //console.log("-------remove unit from tag start");
 
     var unitLength = units.length;
     for (var i = 0; i < unitLength; i++) {
@@ -132,8 +135,8 @@ function removeUnitFromTag(tagName) {
         }
     }
     whale.storage.local.set({unitArray : units}, ()=> {
-        console.log("-------remove unit from tag");
-        console.log(units);
+        //console.log("-------remove unit from tag");
+        //console.log(units);
     });
 }
 function removeTagFromTagArr(tagName) {
@@ -144,7 +147,7 @@ function removeTagFromTagArr(tagName) {
         }
     }
     whale.storage.local.set({tagArr: allTags}, ()=> {
-        console.log(allTags);
+        //console.log(allTags);
     });
 }
 
@@ -214,7 +217,7 @@ function ClickAddBtn(URL, title) {
         }
 
         var newUnit = new Tunit(URL, tags, title);
-        console.log(newUnit);
+        //console.log(newUnit);
         getUnitArrayFromStorage(()=> {
             // units에 new unit저장
             var stored = false;
@@ -229,8 +232,8 @@ function ClickAddBtn(URL, title) {
                 units.push(newUnit);
                 //스토리지에 최종 저장
                 whale.storage.local.set({unitArray : units}, function() {
-                    console.log("스토리지에 units저장 완료");
-                    console.log(units);
+                    //console.log("스토리지에 units저장 완료");
+                    //console.log(units);
                      showAddUI(newUnit);
                 });
             } 
@@ -410,7 +413,7 @@ function addTagByUrl(url, tagName, callBack) {//--------------------------------
            if(units[i].url === url) {
 
                    //태그를 추가 할 수 없는 경우1 : 태그 개수 제한 넘음.
-                   console.log("현재 태그의 개수" + units[i].tags.length);
+                   //console.log("현재 태그의 개수" + units[i].tags.length);
                     if(units[i].tags.length >= maxTags){
 
                        callBack(false);
@@ -558,7 +561,7 @@ function createListEle(unit) {
                 tagsString += tmpString; 
             }
             ListEle.querySelector("#list-tags").innerHTML = tagsString;
-            console.log(tagsString);
+            //console.log(tagsString);
         }
     });
     ListEle.querySelector("#list-handle-delete").addEventListener("click", ()=> {
@@ -583,11 +586,11 @@ function removeUnit(url) {
 
 function removeTagFromUnit(url, tag) {
     //unit에서 tag찾아서 (반드시있음) splice하고 종료..
-    console.log(" --- removeTagFromUnit------");
+    //.log(" --- removeTagFromUnit------");
     for(var i = 0; i < units.length; i++){
         if(units[i].url == url){
             for(var k = 0; k < units[i].tags.length; k++) {
-                console.log(units[i].tags[k]);
+                //console.log(units[i].tags[k]);
                 if(units[i].tags[k] === tag){
                     units[i].tags.splice(k,1);
                     break;
@@ -598,7 +601,7 @@ function removeTagFromUnit(url, tag) {
     }
     //스토리지에 units 다시 넣기!
     whale.storage.local.set({unitArray: units}, function() {
-        console.log(units);
+       // console.log(units);
     });
 }
 

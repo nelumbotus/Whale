@@ -62,7 +62,7 @@ whale.runtime.onConnect.addListener(port => {
                 //스토리지에 저장
                 whale.storage.local.set({pairArray : UrlKeyPairs}, () => {
                     if(!whale.runtime.lastError) {
-                        alert("저장 성공, 길이는 " + UrlKeyPairs.length);
+                        // alert("저장 성공, 길이는 " + UrlKeyPairs.length);
                     }
                 });
                 if(changeInfo.url !== undefined) isCreated = false;
