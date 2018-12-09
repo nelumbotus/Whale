@@ -1,3 +1,362 @@
-div {
+body {
+	background-color: #1A6DE3;
+	font-family: 'NanumSquare';
+	margin: auto 0;
+	overflow: hidden;
+	letter-spacing: -0.7px;
+}
+
+#title-wrap {
+	padding: 16px;
+	position: relative;
+}
+#forDebug {
+	border: 2px solid red;
+}
+
+#title {
+	font-size: 16pt;
+	color : white;
+	font-weight: bolder;
+	vertical-align: top;
+}
+
+#content-wrap {
+	background-color: white;
+	height : 100%;
+	padding: 24px;
+	padding-top: 36px;
+	box-shadow: 0 0 4px 0 #ADB5BD;
+	border-radius: 8px;
+	display: block;
+}
+
+#addBtn-text {
+	font-weight: normal;
+	color : #878481;
+	font-size: 12pt;
+	vertical-align: top;
+	margin-top: 2px;
+}
+
+.imageBtn {
+	width: 20px;
+	cursor: pointer;
+	margin-right: 12px;
+	width: fit-content;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+.text-align-center {
+	text-align: center;
+}
+
+#addBtn-wrap {
+	cursor: pointer;
+	width: fit-content;
+}
+
+
+
+#site-icon {
+	width: 44px;
+	height: 44px;
+	background-color: #1A6DE3;
+	vertical-align: middle;
+	margin-right: 16px;
+	margin-bottom: 8px;
+	border-radius: 4px;
+}
+
+#site-wrap {
+	margin-top: 32px;
+	padding-top: 8px;
+	padding-bottom: 16px;
+	visibility: hidden;
+
+}
+#site-title-wrap {
+	vertical-align: middle;
+}
+
+#site-title {
+	margin: 0;
+	font-size: 16px;
+	color : #262626;
+}
+#site-url {
+	margin: 0;
+	margin-top : 4px;
+	font-size: 14px;
+	color : #ADB5BD;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+#tags-wrap {
+	margin-top: 24px;
+	visibility: hidden;
+}
+#tags-text {
+	background-image: linear-gradient(-200deg, #1A6DE3 0%, #3391D9 100%);
+	color : white;
+	padding: 4px 16px 4px 16px;
+	width: fit-content;
+	border-radius: 0 100px 100px 0;
+	font-weight: bold;
+}
+.line {
+	background-color: #E8ECF0;
+	height: 2px;
+	align-self: center;
+}
+#tags-add-wrap {
+	padding-left : 8px;
+}
+#tag-add-recommand-text {
+	font-size: 10px;
+	color: #878481;
+	visibility: hidden;
+}
+.tag {
+	color : white;
+	background-image: linear-gradient(-200deg, #1A6DE3 0%, #3391D9 100%);
+	text-align: center;
+	font-size: 12pt;
+	padding: 4px;
+	width: fit-content;
+	display: inline-block;
+	margin-right : 8px;
+	border-radius: 100px;
+	padding-left: 14px;
+	padding-right : 8px;
+	margin-bottom: 8px;
+}
+#tagInput {
+	font-size: 11pt;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 8px;
+}
+#tagInput::placeholder {
+	color: #CED4DA;
+}
+
+input[type=text] {
+	border: none;
+}
+
+input[type=text]:focus {
+	border: none;
+	outline: none;
+  }
+
+  #recommanded-tag-area {
+	  margin-bottom: 16px;
+  }
+
+/* search page*/
+
+#searchArea-wrap {
+	background-color: white;
+	height: 100%;
+	padding: 20px;
+	padding-top: 36px;
+	box-shadow: 0 0 4px 0 #ADB5BD;
+	border-radius: 8px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+#search-wrap {
+	padding: 4px;
+	height: 100%;
+	width: 100%;
+}
+#searchInput {
+	display: inline-block;
+	position: absolute;
+	border: none;
+	border-bottom: 2px solid white;
+	background-color: #1A6DE3;
+	width: 230px;
+	left: 40px;
+	top: 0px;
+	font-size: 14pt;
+	color: white;
+}
+
+#searchInput::placeholder {
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 12pt;
+}
+#searchBtn {
+	position: absolute;
+	right: 0;
+	top: 16px;
+	transition: 0.3s;
+	width: fit-content;
+}
+#list-setting {
+	position: absolute;
+	right: 8px;	
+	width: 16px;
+	height: 16px;
+	top: 8px;
 	cursor: pointer;
 }
+.UnitList {
+	background: #FFFFFF;
+	box-shadow: 0 0 4px 0 #ADB5BD;
+	border-radius: 4px;
+	padding: 20px;
+	margin-bottom: 12px;
+	position: relative;
+}
+.UnitList #list-icon {
+	display: inline-block;
+	width: 44px;
+	height: 44px;
+	background-color: #1A6DE3;
+	vertical-align: middle;
+	margin-right: 16px;
+	margin-bottom: 8px;
+	border-radius: 4px;
+}
+.UnitList #list-title-wrap {
+	display: inline-block;
+	vertical-align: middle;
+}
+.UnitList #list-title {
+	font-size: 12pt;
+	font-weight: bold;
+	color: #262626;
+	line-height: 1.5em;
+	cursor: pointer;
+}
+.UnitList #list-url {
+	margin-top: 6px;
+	margin-bottom: 8px;
+	font-size: 10pt;
+	color: #878481;
+	cursor: pointer;
+}
+.UnitList #list-tags {
+	font-size: 10pt;
+	color: #1A6DE3;
+}	
+.UnitList #list-handleArea {
+	margin-top: 12px;
+	display: none;
+	transition: 0.3s;
+	color: #878481;
+}
+.UnitList #list-handle-tags {
+	margin-top: 12px;
+	margin-bottom: 18px;
+}
+.UnitList .list-handle-tagEle {
+	display: inline-block;
+	margin-right: 6px;
+	background-image: linear-gradient(-200deg, #1A6DE3 0%, #3391D9 100%);
+	color : white;
+	padding: 5px;
+	padding-left: 14px;
+	font-size: 10pt;
+	border-radius: 100px;
+	margin-bottom: 6px;
+}
+#list-handle-tagInput {
+	margin-left: 8px;
+	font-size: 10pt;
+	color: #878481;
+	
+}
+#list-handle-tagInput::placeholder {
+	color: #CED4DA;
+}
+#list-handle-delete {
+	font-size: 11pt;
+	color : #FD5F5F;
+	position: absolute;
+	bottom: 18px;
+	right: 18px;
+	cursor: pointer;
+}
+#list-handle-addTagBtn {
+	cursor: pointer;
+}
+
+/*set*/
+#setIconBtn {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	cursor: pointer;
+}
+#set-title {
+	font-size : 14pt; 
+	color: #878481; 
+	display: inline-block;
+	position: absolute;
+	top: 42px;
+	margin-left: 12px;
+	font-weight: bold;
+}
+#setCloseBtn {
+	width: 24px;
+	position: absolute;
+	display: inline-block;
+	top: 42px;
+	right: 56px;
+	cursor: pointer;
+}
+
+#set-wrap {
+	background-color: white;
+	height : 100%;
+	padding: 24px;
+	padding-top: 36px;
+	position: fixed;
+	top:0;
+	width: 100%;
+	overflow-y: scroll;
+	display: none;
+}
+
+/* animation class */
+.bounceInUp {
+	animation: bounceInUp 0.5s linear;
+}
+.bounceInLeft {
+	animation: bounceInLeft 0.5s linear;
+}
+
+/* animation */
+@keyframes bounceInUp {
+	from,
+	80%,
+	to {
+	  -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+	  animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+	}
+  
+	from {
+	  opacity: 0;
+	  -webkit-transform: translate3d(0, 30px, 0);
+	  transform: translate3d(0, 30px, 0);
+	}
+  
+	to {
+		opacity: 1;
+	  -webkit-transform: translate3d(0, 0, 0);
+	  transform: translate3d(0, 0, 0);
+	}
+  }
+
+  /*
+	 css animation ref.
+	 https://github.com/daneden/animate.css/blob/master/animate.css 
+  */
