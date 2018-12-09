@@ -1,0 +1,33 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<style>
+		div {
+			cursor: pointer;
+		}
+		
+		#forDebug {
+			border: 2px solid red;
+		}
+		#stored, #tagRecommend {
+			border: 2px solid blue;		
+		}
+	</style>
+</head>
+
+<body>
+	<div id="addBtn"> 추가하기? </div>
+	<div id="forDebug"> 디버그를 위한 div .. console열기 귀찮아서 만들었습니다</div>
+	
+	<br>아래는 태그 추천 목록 입니다.. <br>
+	<div id = "tagRecommend"> ... </div>
+	<img src = "plus.png"> <input type = "text" name = "tagInput" placeholder = "직접추가" > <br>
+	
+	<br>아래는 지금까지 저장한 페이지 객체들을 보여줍니다<br>
+	<div id = "stored"> ... </div>
+	
+	<script src="sidebar.js"></script>
+</body>
+
+</html>
