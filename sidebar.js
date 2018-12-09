@@ -41,6 +41,7 @@ whale.sidebarAction.onClicked.addListener(result => {
     if(result.opened) location.reload();
 });
 
+
 window.onload = function() {
     init();
 
@@ -71,9 +72,20 @@ window.onload = function() {
     document.getElementById("setIconBtn").addEventListener("click", () => {
         document.getElementById("set-wrap").style.display = "block";
 
+        var tagArea = document.getElementById("set-tag-area");
+        //가지고 있는 태그들 보여주기
+        while(tagArea.hasChildNodes()) {
+            tagArea.removeChild(tagArea.firstChild);
+        }
+        for (var i = 0; i < allTags.length; i++) {
+            var tag = createTagEle_set(allTags[i]);
+            tagArea.appendChild(tag);
+        }
+
     });
     document.getElementById("setCloseBtn").addEventListener("click", ()=> {
         document.getElementById("set-wrap").style.display = "none";
+        var tagArea = document.getElementById("set-tag-area");
         location.reload();
        
     });
@@ -82,6 +94,8 @@ window.onload = function() {
 whale.tabs.onActivated.addListener(() => {
     hideAddUI();
 });
+
+
 
 function init() {
     getPairArrayFromStorage( () => {
@@ -213,15 +227,40 @@ function ClickAddBtn(URL, title) {
             }
             if(!stored) {
                 units.push(newUnit);
-            }
-            //스토리지에 최종 저장
-            whale.storage.local.set({unitArray : units}, function() {
-                console.log("스토리지에 units저장 완료");
-                console.log(units);
+                //스토리지에 최종 저장
+                whale.storage.local.set({unitArray : units}, function() {
+                    console.log("스토리지에 units저장 완료");
+                    console.log(units);
+                     showAddUI(newUnit);
+                });
+            } 
+            else {
                 showAddUI(newUnit);
-            });
+                document.getElementById("addBtn-text").innerHTML = "이미 추가된 게시글 입니다.";
+            }
+            
         });
+        if(searchKey !== "") {
+            var isExist = false;
+            for (var i = 0; i < allTags.length; i++) {
+                if(allTags[i] === searchKey) {
+                    isExist = true;
+                    break;
+                }
+            }
+            if(!isExist) {
+                allTags.push(searchKey);
+                whale.storage.local.set({tagArr :allTags}, ()=>{});
+            }
+        }
     });
+}
+
+function alreayStored() {
+    document.getElementById("addBtn-text").innerHTML = "이미 추가된 게시글 입니다.";
+    document.getElementById("addBtn-text").style.color = "#1A6DE3";
+    document.getElementById("addBtn-text").style.fontWeight = "bold";
+    document.getElementById("icon_deactive").style.fill = "#1A6DE3";
 }
 
 function showAddUI(unit) {
@@ -283,7 +322,7 @@ function showAddUI(unit) {
         recommandTagArea.style.visibility = "hidden";
     }
 
-    document.getElementById("addTagBtn").addEventListener("click", ()=> {
+    document.getElementById("addTagBtn").onclick = function() {
         var tagInput = tagInputForm.value;
         if(tagInput === "" || tagInput === undefined) return;
 
@@ -293,11 +332,10 @@ function showAddUI(unit) {
                 var tag = createTagEle_main(tagInput, unit.url);
                 recommandTagArea.appendChild(tag);
             }
-        });
-
-        
-    });
-    tagInputForm.addEventListener("keyup", (e)=> {
+        });   
+    }
+    
+    tagInputForm.onkeyup = function(e) {
         e.preventDefault();
         if(e.keyCode === 13 && tagInputForm.value !== "") { // input tag에서 enter btn 눌렀을 때
             addTagByUrl(unit.url, tagInputForm.value, function(flag) {
@@ -309,7 +347,7 @@ function showAddUI(unit) {
                 }
             });
         }
-    });
+    }
 }
 
 function hideAddUI() {
@@ -349,7 +387,11 @@ function findWithTag(targetTag) {
 }
 
 function addTagByUrl(url, tagName, callBack) {//-----------------------------------------------추가
-   // allTags에 태그들 추가
+   //공백 제거
+   tagName = tagName.trim();
+   if(tagName === "") return;
+   
+    // allTags에 태그들 추가
    var isTagExist = false;
    for (var i = 0; i < allTags.length; i++) {
         if(allTags[i] === tagName) {
@@ -361,7 +403,7 @@ function addTagByUrl(url, tagName, callBack) {//--------------------------------
        allTags.push(tagName);
        document.getElementById("set-tag-area").appendChild(createTagEle_set(tagName));
    }
-   whale.storage.local.set({tagArr : allTags});
+   whale.storage.local.set({tagArr : allTags}, ()=>{});
 
     getUnitArrayFromStorage(function() {
        for (var i = 0; i < units.length; i++) {

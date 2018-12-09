@@ -5,6 +5,36 @@ function UrlKeyPair(url, searchKey) {
 
 var searchURL;
 var UrlKeyPairs;
+
+// pariArray 정리
+whale.sidebarAction.onClicked.addListener(()=> {
+    whale.tabs.query({}, (result) => {
+        var urlLength = UrlKeyPairs.length;
+
+        for (var k = 0; k < urlLength; k++) {
+            var isSavedUrl = false;
+            for (var i = 0; i < result.length; i++) {
+                if(UrlKeyPairs[k].url === result[i].url) { // 열려 있는 탭 쿼리 중 키워드가 달려있는 탭 (url로 검사)
+                    isSavedUrl = true;
+                    break;   
+                }
+            }
+            if(isSavedUrl !== true) {
+                UrlKeyPairs.splice(k, 1);
+                urlLength -= 1;
+                k -= 1 ;
+            }
+        }
+    });
+
+    whale.storage.local.set({pairArray :UrlKeyPairs}, () => {
+        if(!whale.runtime.lastError) {
+            //alert("정리 성공, 길이는 " + UrlKeyPairs.length);
+        }
+    });
+});
+
+
 whale.storage.local.get(["pairArray"], function(result) {
     if(result.pairArray === null || result.pairArray === undefined) { // storage에 pairArray가 없을 경우
         UrlKeyPairs = [];
@@ -41,6 +71,7 @@ whale.runtime.onConnect.addListener(port => {
         });
     }
 });
+
 
 // url로부터 검색어를 뽑아주는 함수
 function getKeywordFromURL(URL) {
