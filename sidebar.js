@@ -75,8 +75,13 @@ window.onload = function() {
     document.getElementById("setCloseBtn").addEventListener("click", ()=> {
         document.getElementById("set-wrap").style.display = "none";
         location.reload();
+       
     });
 }
+
+whale.tabs.onActivated.addListener(() => {
+    hideAddUI();
+});
 
 function init() {
     getPairArrayFromStorage( () => {
@@ -175,10 +180,7 @@ function hideSearchArea() {
     while(searchWrap.hasChildNodes()) {
         searchWrap.removeChild(searchWrap.firstChild);
     }
-    var myTimer = setTimeout(function() {
-        location.reload();
-        clearTimeout(myTimer);
-    }, 250);
+    hideAddUI();
     
 }
 
@@ -216,13 +218,13 @@ function ClickAddBtn(URL, title) {
             whale.storage.local.set({unitArray : units}, function() {
                 console.log("스토리지에 units저장 완료");
                 console.log(units);
-                handleAddUI(newUnit);
+                showAddUI(newUnit);
             });
         });
     });
 }
 
-function handleAddUI(unit) {
+function showAddUI(unit) {
 //UI제어
     // 추가하기-추가되었습니다 영역
     document.getElementById("addBtn-text").innerHTML = "추가되었습니다!";
@@ -235,6 +237,11 @@ function handleAddUI(unit) {
     document.getElementById("site-wrap").classList.add("bounceInUp");
     document.getElementById("tags-wrap").style.visibility = "visible";
     document.getElementById("tags-wrap").classList.add("bounceInUp");
+    document.getElementById("tags-add-wrap").style.visibility = "visible";
+    document.getElementById("tags-add-wrap").style.display = "block";
+
+    document.getElementById("tagInput").style.display = "inline-block";
+    document.getElementById("addTagBtn").style.display = "inline-block";
 
     // set url and title 
     var url_copy = unit.url, title_copy = unit.title;
@@ -303,6 +310,25 @@ function handleAddUI(unit) {
             });
         }
     });
+}
+
+function hideAddUI() {
+    // 추가하기-추가되었습니다 영역
+    document.getElementById("addBtn-text").innerHTML = "추가하기";
+    document.getElementById("addBtn-text").style.color = "#878481";
+    document.getElementById("addBtn-text").style.fontWeight = "normal";
+    document.getElementById("icon_deactive").style.fill = "#878481";
+
+    // 추가 영역 나타나기
+    document.getElementById("site-wrap").style.visibility = "hidden";
+    document.getElementById("site-wrap").classList.remove("bounceInUp");
+    document.getElementById("tags-wrap").style.visibility = "hidden";
+    document.getElementById("tags-wrap").classList.remove("bounceInUp");
+    document.getElementById("tags-add-wrap").visibility = "hidden";
+    document.getElementById("tags-add-wrap").style.display = "none";
+
+    document.getElementById("tagInput").style.display = "none";
+    document.getElementById("addTagBtn").style.display = "none";
 }
 
 function findWithTag(targetTag) {
